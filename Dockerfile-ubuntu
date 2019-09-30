@@ -1,0 +1,8 @@
+FROM ubuntu:18.04
+
+RUN useradd -ms /bin/bash testuser
+RUN echo 'testuser:testpassword' | chpasswd
+USER testuser
+RUN mkdir /home/testuser/tests
+WORKDIR /home/testuser/tests
+CMD tail -f /dev/null

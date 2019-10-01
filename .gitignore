@@ -2,3 +2,7 @@
 env/
 venv/
 .env
+*.log
+file_with_output*.json
+.coverage
+__pycache__/

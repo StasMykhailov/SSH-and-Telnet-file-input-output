@@ -1,4 +1,4 @@
-FROM web_image:latest
+FROM core_image:latest
 ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 COPY requirements/test.txt /app/

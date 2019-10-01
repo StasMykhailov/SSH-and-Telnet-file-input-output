@@ -7,14 +7,13 @@ services:
     volumes:
       - .:/app
   tests:
-    image: core_image
     build:
       dockerfile: Dockerfile-test
       context: .
-    command: bash -c "prospector && coverage run --source='.' && coverage report"
+    command: bash -c "prospector && coverage run --source='.' -m unittest discover tests && coverage report"
     volumes:
       - .:/app
-  ubuntu:
+  test_ubuntu:
     build:
       dockerfile: Dockerfile-ubuntu
       context: .

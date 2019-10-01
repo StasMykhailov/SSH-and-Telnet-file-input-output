@@ -8,6 +8,6 @@ stop_core:
 	docker-compose stop core
 
 run_tests:
-	docker-compose up  -d --build ubuntu
+	docker-compose up  -d --build test_ubuntu
 	docker-compose up --build tests
-	docker-compose stop ubuntu
+	docker-compose stop test_ubuntu

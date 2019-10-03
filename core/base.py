@@ -5,26 +5,57 @@ import logging
 
 
 class BaseClass(metaclass=abc.ABCMeta):
-
-    def __init__(self, host, port, username, password):
-        logs_filename = 'logs{}.log'.format(datetime.datetime.now)
+    """
+    Base class for file input/output connection. While __init__ get host, port, username and password to connect in
+    future by SSH or Telnet.
+    """
+    def __init__(self, host, port, username, password, look_for_keys):  # noqa too-many-arguments
+        logs_filename = f'logs/logs{datetime.datetime.now()}.log'
         logging.basicConfig(filename=logs_filename, level=logging.INFO)
         self.logger = logging.getLogger()
         self.host = host
         self.port = port
         self.username = username
         self.password = password
+        self.look_for_keys = look_for_keys
+
+    def write_to_file(self, filename, message):
+        """
+        Simple method to write in file
+        :param filename: path to file on remote server
+        :param message: message to write in file on remote server
+        """
+        return self.execute(filename=filename, command='write_to_file', message=message)
+
+    def read_from_file(self, filename):
+        """
+        Simple method to read from file
+        :param filename: path to file on remote server
+        """
+        return self.execute(filename=filename, command='read_file')
 
     @abc.abstractmethod
-    def execute(self):
-        pass
+    def execute(self, filename, command, message=None):
+        """
+        Abstract method to implement in each connection classes for SSH and Telnet connection.
+        :param filename: path to file on remote server
+        :param command: command to work with file-read or write etc
+        :param message: message to write into file
+        """
+        pass  # noqa unnecessary-pass
 
-    def output(self, input_data, output_data, errors):
-        filename = '{}{}.txt'.format('output', datetime.datetime.now())
+    def output(self, filename=None, output_data=None, error=None):
+        """
+        Write information in file in JSON format.
+        :param filename: path to file on remote server
+        :param output_data: information from file or message written int file
+        :param error: if error occupies it would be not None
+        """
+        output_filename = f'output_files/file_with_output{datetime.datetime.now()}.json'
         data = {
-            'input_data': input_data,
-            'output_data': output_data,
-            'errors': errors
+            'filename': str(filename),
+            'output_data': str(output_data),
+            'errors': str(error)
         }
-        with open(filename, 'w+') as output_file:
+        with open(output_filename, 'w+') as output_file:
             json.dump(data, output_file)

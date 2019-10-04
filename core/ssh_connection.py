@@ -16,7 +16,8 @@ class SSHConnection(BaseClass):
         :param password: password for user from server
         :param look_for_keys: False if password not required
         """
-        super().__init__(host, port, username, password, look_for_keys)
+        super().__init__(host, port, username, password)
+        self.look_for_keys = look_for_keys
         self.client = paramiko.SSHClient()
         self.client.set_missing_host_key_policy(paramiko.MissingHostKeyPolicy())
         self.init_error = None
@@ -40,12 +41,13 @@ class SSHConnection(BaseClass):
         :param filename: path to file on remote server
         :param command: command to work with file-read or write etc
         :param message: message to write into file
-        :return:
         """
         if not self.ftp_client and self.init_error:
             return self.output(filename=filename, error=self.init_error)
         file_open_mode = 'r'
-        if message and command == 'write_to_file':
+        if command == 'write_to_file':
+            if not message:
+                return self.output(filename=filename, error='Got no message ti write to file')
             file_open_mode = 'w+'
         try:
             with self.ftp_client.open(filename, file_open_mode) as file_to_execute:
@@ -68,13 +70,3 @@ class SSHConnection(BaseClass):
             self.logger.error(error_message)
             return self.output(filename=filename, error=error_message)
         return self.output(filename=filename, error='Useless command. Please, try again and check your input')
-
-    def output(self, filename=None, output_data=None, error=None):
-        """
-        Write information in file in JSON format. Finally close the connection.
-        :param filename: path to file on remote server
-        :param output_data: information from file or message written int file
-        :param error: if error occupies it would be not None
-        """
-        super().output(filename=filename, output_data=output_data, error=error)
-        self.client.close()

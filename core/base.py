@@ -9,7 +9,8 @@ class BaseClass(metaclass=abc.ABCMeta):
     Base class for file input/output connection. While __init__ get host, port, username and password to connect in
     future by SSH or Telnet.
     """
-    def __init__(self, host, port, username, password, look_for_keys):  # noqa too-many-arguments
+    def __init__(self, host, port, username, password):  # noqa too-many-arguments
+        self.client = None
         logs_filename = f'logs/logs{datetime.datetime.now()}.log'
         logging.basicConfig(filename=logs_filename, level=logging.INFO)
         self.logger = logging.getLogger()
@@ -17,7 +18,6 @@ class BaseClass(metaclass=abc.ABCMeta):
         self.port = port
         self.username = username
         self.password = password
-        self.look_for_keys = look_for_keys
 
     def write_to_file(self, filename, message):
         """
@@ -59,3 +59,4 @@ class BaseClass(metaclass=abc.ABCMeta):
         }
         with open(output_filename, 'w+') as output_file:
             json.dump(data, output_file)
+        self.client.close()

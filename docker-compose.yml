@@ -17,3 +17,6 @@ services:
     build:
       dockerfile: Dockerfile-ubuntu
       context: .
+    ports:
+      - 22
+      - 23

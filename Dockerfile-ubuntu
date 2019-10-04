@@ -1,7 +1,9 @@
 FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y openssh-server
-#RUN apt-get install xinetd telnetd
+RUN apt-get install -y telnetd
+
+RUN echo 'localhost' >> /etc/hosts.allow
 RUN mkdir /var/run/sshd
 RUN echo 'root:password' | chpasswd
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
@@ -15,6 +17,6 @@ WORKDIR /home/testuser/tests
 RUN touch empty_test_file.txt
 RUN touch not_empty_test_file.txt
 RUN echo "test text from not empty file" >> not_empty_test_file.txt
+
 RUN chmod -R 777 ./
-EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]

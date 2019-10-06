@@ -1,0 +1,17 @@
+output-format: grouped
+
+ignore-paths:
+  - build
+  - tests
+
+pylint:
+  disable:
+    - missing-docstring
+  options:
+    max-line-length: 120
+
+pep8:
+  full: true
+
+mccabe:
+  run: false

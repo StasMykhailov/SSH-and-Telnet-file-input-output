@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  core:
+    image: core_image
+    build: .
+    volumes:
+      - .:/app
+  tests:
+    build:
+      dockerfile: Dockerfile-test
+      context: .
+    command: bash -c "prospector && coverage run --source='.' -m unittest discover tests && coverage report"
+    volumes:
+      - .:/app
+  test_ubuntu:
+    build:
+      dockerfile: Dockerfile-ubuntu
+      context: .
+    ports:
+      - 22
+      - 23

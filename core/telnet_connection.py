@@ -1,6 +1,6 @@
 from telnetlib import Telnet
 
-from .base import BaseClass
+from core.base import BaseClass
 
 
 class TelnetConnection(BaseClass):

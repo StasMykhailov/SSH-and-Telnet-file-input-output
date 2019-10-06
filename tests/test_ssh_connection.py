@@ -8,7 +8,7 @@ FILE_TO_WRITE = 'tests/empty_test_file.txt'
 TEXT_TO_WRITE = 'test text written into file'
 
 
-class TestSomething(unittest.TestCase):
+class TestSSHConnection(unittest.TestCase):
     def setUp(self):
         ssh_connection = SSHConnection(
             port='22',

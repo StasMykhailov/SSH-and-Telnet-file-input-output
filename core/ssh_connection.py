@@ -2,7 +2,7 @@ from socket import gaierror
 
 import paramiko
 
-from .base import BaseClass
+from core.base import BaseClass
 
 
 class SSHConnection(BaseClass):

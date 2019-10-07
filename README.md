@@ -1,9 +1,9 @@
 scrooge
 File input/output using SSH and Telnet
-Running
+
 --------------
 
-Using Makefile
+Running Using Makefile
 ^^^^^^^^^^^^^^^^^^^^^
 
 *  to start project run:
